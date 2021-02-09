@@ -18,12 +18,15 @@ export class CarsService {
     return await this.carModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} car`;
+  async findOne(id: string):Promise <Car> {
+    const car = await this.carModel.findById(id);
+    return car;
   }
 
-  update(id: number, updateCarDto) {
-    return `This action updates a #${id} car`;
+  async update(id: string, updateCarDto:Partial<CreateCarDto>) {
+    const myCar: Car = await this.findOne(id);
+    Object.assign(myCar, updateCarDto);
+    return await myCar.save();
   }
 
   async remove(carId) {
