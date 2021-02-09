@@ -3,8 +3,7 @@ import { Document } from "mongoose";
 
 export const CarSchema = new mongoose.Schema({
   make:String,
-  model:String,
-  id:{type: Number},
+  mark:String,
   url_id:String,
   title: String,
   price: Number,
@@ -23,12 +22,11 @@ export const CarSchema = new mongoose.Schema({
   governorate: String,
   city: String,
   image:[{ type:String }],
-}, { timestamps: { createdAt: 'last_update' }})
+}, { timestamps: { createdAt: 'last_update', updatedAt: 'last_update' }})
 
 export interface Car extends Document {
   make:string;
-  //model:string;
-  id: number;
+  mark:string;
   url_id:string;
   title: string;
   price: number;

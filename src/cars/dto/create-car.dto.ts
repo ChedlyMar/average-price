@@ -1,7 +1,6 @@
 export class CreateCarDto {
   make:string;
-  model:string;
-  id: number;
+  mark:string;
   url_id:string;
   title: string;
   price: number;
