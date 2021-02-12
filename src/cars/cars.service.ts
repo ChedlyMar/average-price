@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -9,9 +9,9 @@ export class CarsService {
   
   constructor(@InjectModel("Car") private readonly carModel: Model<Car>) { }
 
-  async create(createCarDto: CreateCarDto) {
+  create(createCarDto: CreateCarDto) {
     const newCar = new this.carModel(createCarDto);
-    return await newCar.save();
+    return newCar.save();
   }
 
   async findAll() {
@@ -20,16 +20,22 @@ export class CarsService {
 
   async findOne(id: string):Promise <Car> {
     const car = await this.carModel.findById(id);
+    if(!car){
+      throw new NotFoundException("hi");
+    }
     return car;
   }
 
   async update(id: string, updateCarDto:Partial<CreateCarDto>) {
-    const myCar: Car = await this.findOne(id);
-    Object.assign(myCar, updateCarDto);
-    return await myCar.save();
+    await this.findOne(id);
+    return this.carModel.updateOne({ _id: id }, { $set: updateCarDto });
   }
 
   async remove(carId) {
-    return await this.carModel.deleteOne({_id:carId});
+    const d = await this.carModel.deleteOne({_id:carId});
+    if(d.deletedCount==0){
+      throw new NotFoundException();
+    }
+    return d;
   }
 }
