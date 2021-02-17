@@ -1,16 +1,21 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsNumber, isNumber } from "class-validator";
 
 export class CreateCarDto {
 
+  @IsNotEmpty()
   @ApiProperty({
     type:String,
-    description: "The car maker"
+    description: "The car maker",
+    required: true
   })
   make:string;
 
+  @IsNotEmpty()
   @ApiProperty({
     type:String,
-    description: "The model of car"
+    description: "The model of car",
+    required: true
   })
   mark:string;
   
@@ -20,27 +25,38 @@ export class CreateCarDto {
   @ApiProperty()
   title?: string;
 
-  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  @ApiProperty({
+    type: String,
+    required: true
+  })
   price?: number;
 
   @ApiProperty()
   description?: string;
-  
+
+  @IsNumber()
   @ApiProperty()
   odometer?: number;
   
+  @IsNotEmpty()
+  @IsNumber()
   @ApiProperty()
   year?:number;
   
+  @IsNumber()
   @ApiProperty()
   horsepower?:number;
   
   @ApiProperty()
   is_sold?:Boolean;
   
+  @IsNumber()
   @ApiProperty()
   ad_count?:number;
   
+  @IsNumber()
   @ApiProperty()
   price_median?:number;
   
